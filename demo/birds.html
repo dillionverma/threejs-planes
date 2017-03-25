@@ -37,6 +37,9 @@
 
 			var boid, boids;
 
+			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
+			scene.add(ground);*/
+
 			var resolution = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
 			// Based on http://www.openprocessing.org/visuals/?visualID=6910
@@ -277,8 +280,6 @@
 					boid = boids[ i ];
 
 					vector.z = boid.position.z;
-
-					boid.repulse( vector );
 
 				}
 
