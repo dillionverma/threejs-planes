@@ -51,7 +51,13 @@
 
 
 			$('#console-input').bind("enterKey",function(e){
-			   boids[0]._holdingPattern = true;
+				if ($('#console-input').val() == 'k') {
+					boids[0]._holdingPattern = true;
+				} else if ($('#console-input').val() == 'j')  {
+					boids[0]._holdingPattern = false;
+				}
+
+			   
 			});
 			$('#console-input').keyup(function(e){
 			    if(e.keyCode == 13)
@@ -98,7 +104,7 @@
 
 				var vector = new THREE.Vector3(),
 				_acceleration, _width = 500, _height = 500, _depth = 200, _goal, _neighborhoodRadius = 100,
-				_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1;
+				_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = 0;
 
 
 				this.callsign = callsign;
@@ -336,33 +342,33 @@
 						}
 						if (boid._holdingSequence == 1) {
 							if (boid.velocity.x >= 0) {
-								boid.velocity.x -= 0.01;
+								boid.velocity.x -= 0.005;
 							} else {
 								boid.velocity.x = 0;
 							}
-							boid.velocity.z += 0.01;
+							boid.velocity.z += 0.005;
 						} else if (boid._holdingSequence == 2) {
 							if (boid.velocity.z <= 0) {
-								boid.velocity.z += 0.01;
+								boid.velocity.z += 0.005;
 							} else {
 								boid.velocity.z = 0;
 							}
-							boid.velocity.x += 0.01;
+							boid.velocity.x += 0.005;
 						} else if (boid._holdingSequence == 3) {
 							if (boid.velocity.x < 0) {
-								boid.velocity.x += 0.01;
+								boid.velocity.x += 0.005;
 							} else {
 								boid.velocity.x = 0;
 							}
 							
-							boid.velocity.z -= 0.01;
+							boid.velocity.z -= 0.005;
 						} else if (boid._holdingSequence == 4) {
 							if (boid.velocity.z >= 0) {
-								boid.velocity.z -= 0.01;
+								boid.velocity.z -= 0.005;
 							} else {
 								boid.velocity.z = 0;
 							}
-							boid.velocity.x -= 0.01;
+							boid.velocity.x -= 0.005;
 							
 						}
 					} else {
