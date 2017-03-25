@@ -87,6 +87,7 @@
 				"Delta 7733"
 			];
 
+
 			var resolution = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
 			// Based on http://www.openprocessing.org/visuals/?visualID=6910
@@ -97,9 +98,7 @@
 
 				var vector = new THREE.Vector3(),
 				_acceleration, _width = 500, _height = 500, _depth = 200, _goal, _neighborhoodRadius = 100,
-				_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0,
-					_maxSpeed = 4,
-					_maxSteerForce = 0.1;
+				_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1;
 
 
 				this.callsign = callsign;
@@ -291,17 +290,18 @@
 
 					boid = boids[ i ] = new Boid();
 					boid.position.x = Math.random() * 400 - 200;
-					boid.position.y = Math.random() * 400 - 200;
+					boid.position.y = Math.random() * 400 - 100;
 					boid.position.z = Math.random() * 400 - 200;
-					boid.velocity.x = Math.random() * 0.1;
-					boid.velocity.y = Math.random() * 0.1;
-					boid.velocity.z = Math.random() * 0.1;
+					boid.velocity.x = Math.random() * 0.7;
+					boid.velocity.y = 0;
+					boid.velocity.z = Math.random() * 0.7;
 
 
 					bird = birds[ i ] = new THREE.Mesh( new Bird(), new THREE.MeshBasicMaterial( { color:Math.random() * 0xffffff, side: THREE.DoubleSide } ) );
 					bird.phase = Math.floor( Math.random() * 62.83 );
 					scene.add( bird );
 				}
+
 
 				controls = new THREE.OrbitControls( camera,  renderer.domElement  );
 				controls.enableDamping = true;
@@ -315,6 +315,8 @@
 
 				console.log(boids);
 			}
+
+			
 
 			function onWindowResize() {
 
@@ -378,6 +380,9 @@
 
 
 					if (boid._holdingPattern) {
+						console.log("break");
+						console.log(boid.velocity.x);
+						console.log(boid.velocity.z);
 						if (boid.velocity.x > 0 && boid.velocity.z > 0) {
 							boid._holdingSequence = 1;
 						} else if (boid.velocity.x > 0 && boid.velocity.z <= 0) {
@@ -388,17 +393,35 @@
 							boid._holdingSequence = 4;
 						}
 						if (boid._holdingSequence == 1) {
-							boid.velocity.x -= 0.05;
-							boid.velocity.z += 0.05;
+							if (boid.velocity.x >= 0) {
+								boid.velocity.x -= 0.01;
+							} else {
+								boid.velocity.x = 0;
+							}
+							boid.velocity.z += 0.01;
 						} else if (boid._holdingSequence == 2) {
-							boid.velocity.x += 0.05;
-							boid.velocity.z += 0.05;
+							if (boid.velocity.z <= 0) {
+								boid.velocity.z += 0.01;
+							} else {
+								boid.velocity.z = 0;
+							}
+							boid.velocity.x += 0.01;
 						} else if (boid._holdingSequence == 3) {
-							boid.velocity.x += 0.05;
-							boid.velocity.z -= 0.05;
+							if (boid.velocity.x < 0) {
+								boid.velocity.x += 0.01;
+							} else {
+								boid.velocity.x = 0;
+							}
+							
+							boid.velocity.z -= 0.01;
 						} else if (boid._holdingSequence == 4) {
-							boid.velocity.x -= 0.05;
-							boid.velocity.z -= 0.05;
+							if (boid.velocity.z >= 0) {
+								boid.velocity.z -= 0.01;
+							} else {
+								boid.velocity.z = 0;
+							}
+							boid.velocity.x -= 0.01;
+							
 						}
 					} else {
 						boid._holdingTime = 0;
