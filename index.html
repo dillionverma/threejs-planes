@@ -42,12 +42,18 @@
 
 			var boid, boids;
 
+			var names = [
+				"Boeing 737",
+				"Virgin Airlines 123",
+				"AA 2139",
+				"Delta 7733"
+			];
 
 			var resolution = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
 			// Based on http://www.openprocessing.org/visuals/?visualID=6910
 
-			var Boid = function() {
+			var Boid = function(callsign) {
 
 				var self = this;
 
@@ -56,6 +62,7 @@
 					_maxSpeed = 4,
 					_maxSteerForce = 0.1;
 
+				this.callsign = callsign;
 				this.position = new THREE.Vector3();
 				this.velocity = new THREE.Vector3();
 				_acceleration = new THREE.Vector3();
@@ -159,9 +166,8 @@
 				birds = [];
 				boids = [];
 
-				for ( var i = 0; i < 20; i ++ ) {
-
-					boid = boids[ i ] = new Boid();
+				for ( var i = 0; i < 4; i ++ ) {
+					boid = boids[ i ] = new Boid(names[i]);
 					boid.position.x = Math.random() * 400 - 200;
 					boid.position.y = Math.random() * 400 - 200;
 					boid.position.z = Math.random() * 400 - 200;
@@ -174,7 +180,6 @@
 					scene.add( bird );
 				}
 
-
 				controls = new THREE.OrbitControls( camera,  renderer.domElement  );
 				controls.enableDamping = true;
 				controls.dampingFactor = 0.25;
@@ -185,7 +190,7 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 				onWindowResize();
 
-
+				console.log(boids);
 			}
 
 			function onWindowResize() {
@@ -242,6 +247,17 @@
 
 			function render() {
 				renderer.render( scene, camera );
+			}
+			function findPlane(callsign) {
+				//	Finds Plane Based on Reference Name
+				for(var i = 0; i < boids.length; i++) {
+					console.log(boids[i].callsign);
+					if(callsign == boids[i].callsign) {
+						return boids[i];
+					} else {
+						console.log("Plane not found.");
+					}
+				}
 			}
 
 		</script>
