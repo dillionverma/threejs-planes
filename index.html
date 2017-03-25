@@ -141,7 +141,7 @@
 
 					this.trail_mesh = new THREE.Mesh( this.trail_line.geometry, this.trail_material ); // this syntax could definitely be improved!
 					this.trail_mesh.frustumCulled = false;
-
+					this.trail_mesh.scale.set(10,10,10);
 					scene.add( this.trail_mesh );
 
 					this.trail_initialized = true;
@@ -181,14 +181,14 @@
 					'textures/terrain/grasslight-big.jpg',
 				 	function(texture) {
 						var groundMaterial = new THREE.MeshBasicMaterial({map: groundTexture});
-						var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry(20000,20000), groundMaterial)
+						var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry(50000,50000), groundMaterial)
 						mesh.position.y = -250;
 						mesh.rotation.x = Math.PI / 2;
 						mesh.rotation.y = Math.PI;
 						mesh.receiveShadow = true;
 						scene.add(mesh);
 					});
-				groundTexture.repeat.set(8, 8);
+				groundTexture.repeat.set(16, 16);
 				groundTexture.wrapS = THREE.RepeatWrapping;
 				groundTexture.wrapT = THREE.RepeatWrapping;
 
@@ -209,13 +209,13 @@
 					side: THREE.DoubleSide
 				}),
 
-				skyboxMesh = new THREE.Mesh(new THREE.BoxGeometry(2000, 2000, 2000, 1, 1, 1), material);
+				skyboxMesh = new THREE.Mesh(new THREE.BoxGeometry(2500, 2500, 2500, 1, 1, 1), material);
 
 				scene.add(skyboxMesh);
 
 
 
-				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, .1, 2500 );
+				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, .1, 5000 );
 				camera.position.set( 0, 0, -500 );
 
 				var container = document.getElementById( 'container' );
@@ -241,6 +241,7 @@
 
 					bird = birds[ i ] = new THREE.Mesh( new Bird(), new THREE.MeshBasicMaterial( { color:Math.random() * 0xffffff, side: THREE.DoubleSide } ) );
 					bird.phase = Math.floor( Math.random() * 62.83 );
+					bird.scale.set(10,10,10);
 					scene.add( bird );
 				}
 
