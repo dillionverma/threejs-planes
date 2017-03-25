@@ -18,8 +18,10 @@
 
 		<script src="js/three.min.js"></script>
 		<script src="js/OrbitControls.js"></script>
+		<script src="js/ColladaLoader.js"></script>
 		<script src="../src/THREE.MeshLine.js"></script>
 		<script src="js/Bird.js"></script>
+
 
 		<script>
 
@@ -191,6 +193,21 @@
 
 			function init() {
 
+
+				// ground
+				var loader = new THREE.TextureLoader();
+				var groundTexture = loader.load( 'textures/terrain/grasslight-big.jpg' );
+				groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+				groundTexture.repeat.set( 25, 25 );
+				groundTexture.anisotropy = 16;
+				var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: groundTexture } );
+				var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
+				mesh.position.y = - 250;
+				mesh.rotation.x = - Math.PI / 2;
+				mesh.receiveShadow = true;
+				scene.add( mesh );
+
+
 				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, .1, 1000 );
 				camera.position.set( 0, 0, -500 );
 
@@ -220,6 +237,9 @@
 					bird.phase = Math.floor( Math.random() * 62.83 );
 					scene.add( bird );
 				}
+
+
+
 
 				controls = new THREE.OrbitControls( camera,  renderer.domElement  );
 				controls.enableDamping = true;
