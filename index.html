@@ -5,16 +5,37 @@
 		<meta charset="utf-8">
 		<meta property="og:description" content="THREE.MeshLine - Demo">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		<link rel="stylesheet" href="css/main.css">
+		<!-- <link rel="stylesheet" href="css/main.css"> -->
 		<link href='https://fonts.googleapis.com/css?family=Lato:400,700,700italic,400italic,300,300italic' rel='stylesheet' type='text/css'>
+		<style type="text/css">
+			body {
+				margin:0;
+
+			}
+			.console {
+				width:200px;
+				position:fixed;
+				bottom:0;
+				right:0;
+				color:white;
+			}
+		</style>
 	</head>
 	<body>
 
-		<div id="container"></div>
+		<div id="container">
+			
+			<div class="console">
+				<input type="text" name="test" id="console-input">
+			</div>
+
+		</div>
 		<div id="title">
 			<h1>Air Traffic Control Simulator</h1>
 			<p>Move your mouse around!</p>
 		</div>
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 		<script src="lib/three.min.js"></script>
 		<script src="lib/ColladaLoader.js"></script>
@@ -27,6 +48,19 @@
 
 		<script>
 
+
+
+			$('#console-input').bind("enterKey",function(e){
+			   boids[0]._holdingPattern = true;
+			});
+			$('#console-input').keyup(function(e){
+			    if(e.keyCode == 13)
+			    {
+			        $(this).trigger("enterKey");
+			    }
+			});
+
+
 			var scene = new THREE.Scene();
 
 			var SCREEN_WIDTH = window.innerWidth,
@@ -38,6 +72,8 @@
 					birds, bird;
 
 			var boid, boids;
+
+			var counter = 0;
 
 			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
 			scene.add(ground);*/
@@ -52,7 +88,7 @@
 
 				var vector = new THREE.Vector3(),
 				_acceleration, _width = 500, _height = 500, _depth = 200, _goal, _neighborhoodRadius = 100,
-				_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false;
+				_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0;
 
 				this.position = new THREE.Vector3();
 				this.velocity = new THREE.Vector3();
@@ -200,7 +236,73 @@
 
 
 				// ground
+				// var loader = new THREE.TextureLoader();
+				// // var groundTexture = loader.load( 'textures/grasslight-big.jpg' );
+
+				// // ground
+				// var groundTexture = loader.load( 'grasslight-big.jpg' );
+				// groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+				// groundTexture.repeat.set( 25, 25 );
+				// groundTexture.anisotropy = 16;
+				// var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff, map: groundTexture } );
+				// var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
+				// mesh.position.y = - 250;
+				// mesh.rotation.x = - Math.PI / 2;
+				// mesh.receiveShadow = true;
+				// scene.add( mesh );
+
+
 				var loader = new THREE.TextureLoader();
+				// loader.load( 'grasslight-big.jpg', function ( texture ) {
+				// 	console.log('test');
+				// 	texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+				// 	texture.repeat.set( 25, 25 );
+				// 	texture.anisotropy = 16;
+				// 	var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff, map: texture } );
+				// 	var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
+				// 	mesh.position.y = - 250;
+				// 	mesh.rotation.x = - Math.PI / 2;
+				// 	mesh.receiveShadow = true;
+				// 	scene.add( mesh );
+				// } );
+
+
+				// var floorTexture = new THREE.ImageUtils.loadTexture( 'grasslight-big.jpg' );
+				// floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+				// floorTexture.repeat.set( 25, 25 );
+				// floorTexture.anisotropy = 16;
+				// var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+				// var floorGeometry = new THREE.PlaneBufferGeometry(20000, 20000);
+				// var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+				// floor.position.y = - 400;
+				// floor.rotation.x = - Math.PI / 2;
+				// floor.receiveShadow = true;
+				// scene.add(floor);
+
+				// var groundTexture = loader.load( 'textures/terrain/grasslight-big.jpg' );
+				// var grid = new THREE.GridHelper( 1000, 1000, 0xffffff, 0x555555 );
+				// grid.rotateOnAxis( new THREE.Vector3( 1, 0, 0 ), 90 * ( Math.PI/180 ) );
+				// scene.add( grid );
+
+
+				// ground
+				// Sea
+				// var w = 10000, h = 5000;
+				// var seaTex = THREE.ImageUtils.loadTexture("grasslight-big.jpg");
+				// seaTex.wrapS = seaTex.wrapT = THREE.RepeatWrapping;
+				// seaTex.repeat.set(4, 2);
+				// var seaMat = new THREE.MeshPhongMaterial({
+				// 	specular: 0xffffff,
+				// 	shininess: 100,
+				// 	map: seaTex,
+				// 	bumpMap: seaTex,
+				// 	bumpScale: 5.0
+				// });
+				// var seaGeo = new THREE.PlaneGeometry(w, h);
+				// var sea = new THREE.Mesh(seaGeo, seaMat);
+				// scene.add(sea);
+
+
 				var groundTexture = loader.load( 'textures/terrain/grasslight-big.jpg' );
 				groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
 				groundTexture.repeat.set( 25, 25 );
@@ -211,6 +313,8 @@
 				mesh.rotation.x = - Math.PI / 2;
 				mesh.receiveShadow = true;
 				scene.add( mesh );
+
+
 
 
 				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, .1, 1000 );
@@ -226,15 +330,15 @@
 				birds = [];
 				boids = [];
 
-				for ( var i = 0; i < 20; i ++ ) {
+				for ( var i = 0; i < 1; i ++ ) {
 
 					boid = boids[ i ] = new Boid();
 					boid.position.x = Math.random() * 400 - 200;
 					boid.position.y = Math.random() * 400 - 200;
 					boid.position.z = Math.random() * 400 - 200;
-					boid.velocity.x = Math.random() * 2 - 1;
-					boid.velocity.y = Math.random() * 2 - 1;
-					boid.velocity.z = Math.random() * 2 - 1;
+					boid.velocity.x = Math.random() * 0.1;
+					boid.velocity.y = Math.random() * 0.1;
+					boid.velocity.z = Math.random() * 0.1;
 					boid.setAvoidWalls( false );
 					boid.setWorldSize( 300, 300, 300 );
 
@@ -291,14 +395,22 @@
 
 			function animate() {
 
+				counter += 1;
+
 				requestAnimationFrame( animate );
 
 				controls.update();
 
 				for ( var i = 0, il = birds.length; i < il; i++ ) {
 
+
+
+
+
 					boid = boids[ i ];
 					boid.run( boids );
+
+
 
 					bird = birds[ i ];
 					bird.position.copy( boids[ i ].position );
@@ -314,7 +426,42 @@
 
 					bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z ) + 0.1 )  ) % 62.83;
 					bird.geometry.vertices[ 5 ].y = bird.geometry.vertices[ 4 ].y = Math.sin( bird.phase ) * 5;
+
+
+
+
+					if (boid._holdingPattern) {
+						if (boid.velocity.x > 0 && boid.velocity.z > 0) {
+							boid._holdingSequence = 1;
+						} else if (boid.velocity.x > 0 && boid.velocity.z <= 0) {
+							boid._holdingSequence = 2;
+						} else if (boid.velocity.x <= 0 && boid.velocity.z <= 0) {
+							boid._holdingSequence = 3;
+						} else {
+							boid._holdingSequence = 4;
+						}
+						if (boid._holdingSequence == 1) {
+							boid.velocity.x -= 0.05;
+							boid.velocity.z += 0.05;
+						} else if (boid._holdingSequence == 2) {
+							boid.velocity.x += 0.05;
+							boid.velocity.z += 0.05;
+						} else if (boid._holdingSequence == 3) {
+							boid.velocity.x += 0.05;
+							boid.velocity.z -= 0.05;
+						} else if (boid._holdingSequence == 4) {
+							boid.velocity.x -= 0.05;
+							boid.velocity.z -= 0.05;
+						}
+					} else {
+						boid._holdingTime = 0;
+						boid._holdingSequence = 1;
+					}
+
 				}
+
+
+
 
 				render();
 			}
@@ -322,6 +469,7 @@
 			function render() {
 				renderer.render( scene, camera );
 			}
+
 
 		</script>
 
