@@ -8,6 +8,8 @@
 		<!-- <link rel="stylesheet" href="css/main.css"> -->
 		<link href='https://fonts.googleapis.com/css?family=Lato:400,700,700italic,400italic,300,300italic' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 		
 		<style type="text/css">
 			body {
@@ -26,8 +28,8 @@
 	<body>
 
 		<div id="container">
-			<button id="startButtonId">Play</button>
-			<button id="pauseButtonId">Pause</button>
+			<a href="#" id="startButtonId"><i class="fa fa-play"></i></a>
+			<a href="#" id="pauseButtonId"><i class="fa fa-pause"></i></a>
 			<div class="console-display"></div>
 			<div class="console">
 				<input type="text" name="test" id="console-input">
@@ -169,9 +171,13 @@
 
 			$('#pauseButtonId').click(function() {
 				planeWorking = false;
+				$(this).hide();
+				$("#startButtonId").show();
 			})
 			$('#startButtonId').click(function() {
 				planeWorking = true;
+				$(this).hide();
+				$("#pauseButtonId").show();
 			})
 
 
