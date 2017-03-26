@@ -150,7 +150,7 @@
 			loader = new THREE.ColladaLoader();
 		    loader.load('assets/models/3d-model.dae',function colladaReady( collada ){
 
-				var Boid = function(callsign) {
+				var Boid = function() {
 
 					var self = this;
 
@@ -159,7 +159,7 @@
 					_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = false, _minSpeed = 0.7, _targetAltitude = 150;
 
 
-					this.callsign = callsign;
+					this.callsign = new String();
 					this.position = new THREE.Vector3();
 					this.velocity = new THREE.Vector3();
 					_acceleration = new THREE.Vector3();
@@ -302,6 +302,7 @@
 
 
 						boid = boids[ i ] = new Boid();
+						boid.callsign = airplanes[i][0];
 						boid.position.x = airplanes[i][1];
 						boid.position.y = airplanes[i][2];
 						boid.position.z = airplanes[i][3];
@@ -670,12 +671,11 @@
 				if (annyang) {
 				  // Let's define a command.
 				  var commands = {
-				    'plane *callsign follow holding pattern':function(callsign) {
-						//findPlane(callsign)._holdingPattern = true;
-						console.log(callsign);
-						findPlane(callsign)._holdingPattern = true;
+				    '*callsign follow holding pattern':function(callsign) {
+						var plane = findPlane(callsign);
+						plane._holdingPattern = true;
 					},
-					'plane *callsign resume normal flight path':function(callsign) {
+					'*callsign resume normal flight path':function(callsign) {
 						findPlane(callsign)._holdingPattern = false;
 					}
 				  };
