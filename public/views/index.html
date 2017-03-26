@@ -259,7 +259,7 @@
 
 			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
 			scene.add(ground);*/
-			var airplanes = [ ["Boeing 737", 800, 100, 700, -0.5, -0.5], ["Virgin Airlines 123", 800, 200, 700, -0.6, -0.4]  ];
+			var airplanes = [ ["Boeing 737", 800, 100, 700, -0.5, -0.5]];
 
 
 			var commando = [];
@@ -542,23 +542,6 @@
 
 					scene.add( spotLight );
 
-
-
-					curve = new THREE.CubicBezierCurve3(
-                        new THREE.Vector3( 800, 100, 700 ),
-                        new THREE.Vector3( 700, 100, 600 ),
-                        new THREE.Vector3( -400, -250, 50 ),
-                        new THREE.Vector3( -2000, -250, 0 )
-                    );
-
-                    var geometry = new THREE.Geometry();
-                    geometry.vertices = curve.getPoints( 50 );
-
-                    var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
-
-                    // Create the final object to add to the scene
-                    var curveObject = new THREE.Line( geometry, material );
-                    scene.add(curveObject);
 
 
 
