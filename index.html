@@ -36,6 +36,7 @@
 		</div>
 
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
 		<script src="lib/three.min.js"></script>
 		<script src="lib/ColladaLoader.js"></script>
@@ -49,8 +50,6 @@
 
 
 		<script>
-
-
 
 			$('#console-input').bind("enterKey",function(e){
 				if (Math.sqrt(boids[0].velocity.x^2 + boids[0].velocity.z^2) < boids[0]._minSpeed) {
@@ -209,9 +208,7 @@
 						this.move();
 					};
 
-
 					this.move = function () {
-
 						this.velocity.add( _acceleration );
 
 						var l = this.velocity.length();
@@ -303,14 +300,22 @@
 
 					for ( var i = 0; i < airplanes.length; i ++ ) {
 
+
 						boid = boids[ i ] = new Boid();
 						boid.position.x = airplanes[i][1];
 						boid.position.y = airplanes[i][2];
 						boid.position.z = airplanes[i][3];
 						boid.velocity.x = airplanes[i][4];
+
 						boid.velocity.y = 0;
 						boid.velocity.z = airplanes[i][5];
 
+ 				    	bird = birds[i] = collada.scene
+ 				    	// bird.phase = Math.floor( Math.random() * 62.83 );
+						bird.scale.set(0.05,0.05,0.05);
+						scene.add(bird);
+ 				    	console.log(bird);
+ 				    	console.log(birds[i]);
 
 						// bird = birds[ i ] = new THREE.Mesh( new Bird(), new THREE.MeshBasicMaterial( { color:Math.random() * 0xffffff, side: THREE.DoubleSide } ) );
 						// bird.phase = Math.floor( Math.random() * 62.83 );
@@ -363,8 +368,6 @@
 						group = new THREE.Group();
 						group.add( mesh );
 						scene.add( group );
-
-
 
 					}
 
@@ -455,6 +458,7 @@
 							bird = birds[ i ];
 							bird.position.copy( boids[ i ].position );
 
+
 							mish = mishs[i];
 							mish.position.copy( boids[ i ].position );
 
@@ -473,6 +477,7 @@
 
 							// if (boid.trail_initialized)
 							// 	boid.trail_material.uniforms.color.value = color;
+
 
 							bird.rotation.y = Math.atan2( - boid.velocity.z, boid.velocity.x ) + 1.6;
 
@@ -662,11 +667,31 @@
 						}
 					}
 				}
+				if (annyang) {
+				  // Let's define a command.
+				  var commands = {
+				    'plane *callsign follow holding pattern':function(callsign) {
+						//findPlane(callsign)._holdingPattern = true;
+						console.log(callsign);
+						findPlane(callsign)._holdingPattern = true;
+					},
+					'plane *callsign resume normal flight path':function(callsign) {
+						findPlane(callsign)._holdingPattern = false;
+					}
+				  };
+
+				  // Add our commands to annyang
+				  annyang.addCommands(commands);
+
+				  // Start listening.
+				  annyang.start();
+				}
 			});
 			});
 
 
 		</script>
+
 
 	</body>
 </html>
