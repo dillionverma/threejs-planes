@@ -43,6 +43,8 @@
 		<script src="lib/THREE.MeshLine.js"></script>
 
 
+		<script src="js/StereoEffect.js"></script>
+		<script src="js/DeviceOrientationControls.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/Bird.js"></script>
 
@@ -90,6 +92,12 @@
 					boids[0]._rightDownWind = false;
 				}
 
+				if ($('#console-input').val().includes("a")) {
+					boids[0]._targetAltitude = $('#console-input').val().split(" ")[1];
+					console.log($('#console-input').val().split(" ")[1]);
+				}
+
+
 
 			});
 			$('#console-input').keyup(function(e){
@@ -113,9 +121,9 @@
 				controls,
 				renderer,
 				birds,
-				bird;
+				bird, centerOffset;
 
-			var boid, boids;
+			var boid, boids, mishs;
 
 			var counter = 0;
 			var leftDownWindCounter = 1;
@@ -123,17 +131,21 @@
 
 			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
 			scene.add(ground);*/
-			var names = [
-				"Boeing 737",
-				"Virgin Airlines 123",
-				"AA 2139",
-				"Delta 7733"
-			];
+			var airplanes = [ ["Boeing 737", 800, 100, 700, -0.5, -0.5] ]
+			// var names = [
+			// 	"Boeing 737",
+			// 	"Virgin Airlines 123",
+			// 	"AA 2139",
+			// 	"Delta 7733"
+			// ];
 
 
 			var resolution = new THREE.Vector2( window.innerWidth, window.innerHeight );
 
 			// Based on http://www.openprocessing.org/visuals/?visualID=6910
+
+			var loader = new THREE.FontLoader();
+			loader.load( 'js/helvetiker_regular.typeface.json', function ( font ) {
 
 			loader = new THREE.ColladaLoader();
 		    loader.load('assets/models/3d-model.dae',function colladaReady( collada ){
@@ -144,7 +156,7 @@
 
 					var vector = new THREE.Vector3(),
 					_acceleration, _width = 500, _height = 500, _depth = 200, _goal, _neighborhoodRadius = 100,
-					_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = false, _minSpeed = 0.7;
+					_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = false, _minSpeed = 0.7, _targetAltitude = 150;
 
 
 					this.callsign = callsign;
@@ -214,10 +226,20 @@
 				}
 
 
-				init();
+				init(font);
 				animate();
 
-				function init() {
+				function init(font) {
+					container = $(".container");
+					var info = document.createElement( 'div' );
+					info.style.position = 'absolute';
+					info.style.top = '10px';
+					info.style.width = '100%';
+					info.style.textAlign = 'center';
+					info.innerHTML = 'Simple Dynamic 3D Text Example by <a href="http://www.lab4games.net/zz85/blog">zz85</a><br>Drag to spin the text';
+					container.append( info );
+
+
 
 					var loader = new THREE.TextureLoader();
 
@@ -262,6 +284,8 @@
 					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, .1, 5000 );
 					camera.position.set( 0, 0, -500 );
 
+
+
 					var container = document.getElementById( 'container' );
 
 					renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true });
@@ -269,18 +293,22 @@
 					renderer.setPixelRatio( window.devicePixelRatio );
 					container.appendChild( renderer.domElement );
 
+
 					birds = [];
 					boids = [];
+					mishs = [];
 
-					for ( var i = 0; i < 1; i ++ ) {
+					for ( var i = 0; i < airplanes.length; i ++ ) {
 
-						boid = boids[ i ] = new Boid(names[i]);
-						boid.position.x = Math.random() * 400 - 200;
-						boid.position.y = Math.random() * 400 - 100;
-						boid.position.z = Math.random() * 400 - 200;
-						boid.velocity.x = Math.random() * 0.7;
+
+						boid = boids[ i ] = new Boid();
+						boid.position.x = airplanes[i][1];
+						boid.position.y = airplanes[i][2];
+						boid.position.z = airplanes[i][3];
+						boid.velocity.x = airplanes[i][4];
+
 						boid.velocity.y = 0;
-						boid.velocity.z = Math.random() * 0.7;
+						boid.velocity.z = airplanes[i][5];
 
  				    	bird = birds[i] = collada.scene
  				    	// bird.phase = Math.floor( Math.random() * 62.83 );
@@ -289,8 +317,60 @@
  				    	console.log(bird);
  				    	console.log(birds[i]);
 
- 				        planeWorking = true;
+						// bird = birds[ i ] = new THREE.Mesh( new Bird(), new THREE.MeshBasicMaterial( { color:Math.random() * 0xffffff, side: THREE.DoubleSide } ) );
+						// bird.phase = Math.floor( Math.random() * 62.83 );
+						// bird.scale.set(3,3,3);
+						// scene.add( bird );
+
+
+						// loader = new THREE.ColladaLoader();
+						// console.log('testing again1');
+	 				//     loader.load('assets/models/3d-model.dae',function colladaReady( collada ){
+	 				    	bird = birds[i] = collada.scene
+	 				    	// bird.phase = Math.floor( Math.random() * 62.83 );
+							bird.scale.set(0.05,0.05,0.05);
+							scene.add(bird);
+
+								//   	console.log(bird);
+								//   	console.log(birds[i]);
+	 				        // bird = birds [i]  = collada.scene;
+	 				        // scene.add( bird );
+	 				        // console.log(bird);
+	 				        planeWorking = true;
+	 			        // });
+
+
+
+	 			        var theText = airplanes[i][0];
+						var hash = document.location.hash.substr( 1 );
+						if ( hash.length !== 0 ) {
+							theText = hash;
+						}
+						var geometry = new THREE.TextGeometry( theText, {
+							font: font,
+							size: 10,
+							height: 5,
+							curveSegments: 1
+						});
+						geometry.computeBoundingBox();
+						centerOffset = -0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+						var material = new THREE.MultiMaterial( [
+							new THREE.MeshBasicMaterial( { color:  0xffffff, overdraw: 0 } ),
+							new THREE.MeshBasicMaterial( { color: 0x000000, overdraw: 0 } )
+						] );
+						var mesh = mishs[i] = new THREE.Mesh( geometry, material );
+
+						mesh.position.x = bird.position.x;
+						mesh.position.y = bird.position.y;
+						mesh.position.z = bird.position.z;
+						mesh.rotation.x = 0;
+						mesh.rotation.y = Math.PI * 2;
+						group = new THREE.Group();
+						group.add( mesh );
+						scene.add( group );
+
 					}
+
 
 
 					var spotLight = new THREE.SpotLight( 0xffffff );
@@ -314,10 +394,26 @@
 
 					document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
+					// effect = new THREE.StereoEffect(renderer);
+					// element.addEventListener('click', fullscreen, false);
+
+					function setOrientationControls(e) {
+	          if (!e.alpha) {
+	            return;
+	          }
+	          controls = new THREE.DeviceOrientationControls(camera, true);
+	          controls.connect();
+	          controls.update();
+	          element.addEventListener('click', fullscreen, false);
+	          window.removeEventListener('deviceorientation', setOrientationControls, true);
+	        }
+	        window.addEventListener('deviceorientation', setOrientationControls, true);
+
 					window.addEventListener( 'resize', onWindowResize, false );
 					onWindowResize();
 
 				}
+
 
 
 
@@ -362,18 +458,44 @@
 							bird = birds[ i ];
 							bird.position.copy( boids[ i ].position );
 
+
+							mish = mishs[i];
+							mish.position.copy( boids[ i ].position );
+
+
+							mish.position.y += 30;
+							mish.position.x += centerOffset;
+
+							mish.rotation.copy( camera.rotation );
+
+
+
+
+
+							// color = bird.material.color;
+							// //	color.r = color.g = color.b = ( 500 - bird.position.z ) / 1000;
+
+							// if (boid.trail_initialized)
+							// 	boid.trail_material.uniforms.color.value = color;
+
+
 							bird.rotation.y = Math.atan2( - boid.velocity.z, boid.velocity.x ) + 1.6;
+
 
 							// bird.rotation.y += Math.atan2( - boid.velocity.z, boid.velocity.x );
 							bird.rotation.z = Math.asin( boid.velocity.y / boid.velocity.length() );
 
-							bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z ) + 0.1 )  ) % 62.83;
+
+
+
+							bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z ) + 0.1 ) ) % 62.83;
 							// bird.geometry.vertices[ 5 ].y = bird.geometry.vertices[ 4 ].y = Math.sin( bird.phase ) * 5;
 
 
 
 
 							if (boid._holdingPattern) {
+
 								if (boid.velocity.x > 0 && boid.velocity.z > 0) {
 									boid._holdingSequence = 1;
 								} else if (boid.velocity.x > 0 && boid.velocity.z <= 0) {
@@ -516,6 +638,12 @@
 								console.log('test1');
 							}
 
+							if (boid._targetAltitude > boid.position.y) {
+								boid.position.y += 0.2;
+							} else if (boid._targetAltitude < boid.position.y) {
+								boid.position.y -= 0.2;
+							}
+
 						}
 					}
 
@@ -526,6 +654,7 @@
 
 				function render() {
 					renderer.render( scene, camera );
+				  // effect.render(scene, camera);
 				}
 				function findPlane(callsign) {
 					//	Finds Plane Based on Reference Name
@@ -557,6 +686,7 @@
 				  // Start listening.
 				  annyang.start();
 				}
+			});
 			});
 
 
