@@ -11,6 +11,14 @@
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/css/jquery.terminal.min.css" rel="stylesheet"/>
+		<style type="text/css">
+			body {
+				background-color:black;
+			}
+			#title {
+				color:white;
+			}
+		</style>
 	</head>
 	<body>
 
@@ -31,8 +39,7 @@
 
 		</div>
 		<div id="title">
-			<h1>Air Traffic Control Simulator</h1>
-			<p>Move your mouse around!</p>
+			<h1>Loading...</h1>
 		</div>
 
 
@@ -68,7 +75,7 @@
 		<script src="../js/DeviceOrientationControls.js"></script>
 		<script src="../js/OrbitControls.js"></script>
 		<script src="../js/Bird.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/js/jquery.terminal.min.js"></script>
+		<script src="../js/jquery.terminal.min.js"></script>
 
 
 
@@ -78,7 +85,7 @@
 
 			$(document).ready(function() {
 				$('#myModal').modal('toggle');
-				
+
 			})
 
 
@@ -101,12 +108,12 @@
 							boids[0]._holdingPattern = false;
 							boids[0]._leftDownWind = false;
 							boids[0]._rightDownWind = false;
-						} else if ((cmd.includes('Next')) || (cmd.includes('next'))) {
-							window.location.replace("http://www.w3schools.com");
-						} else {
-							term.echo("Command not recognized.")
-						}
+						} 
 					}
+					if (cmd.includes('Next') || cmd.includes('next')) {
+						term.echo("Opening module");
+						window.location.replace("http://www.w3schools.com");
+					} 
 				}
 				// if (cmd == )
 
