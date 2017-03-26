@@ -22,7 +22,7 @@
 				<input type="text" name="test" id="console-input" placeholder="Type Commands (Or speak commands)">
 			</div>
 
-			<audio id="player" controls autoplay hidden="true">
+			<audio id="player" controls autoplay hidden="false">
 				<source id="ogg_src" type="audio/ogg">
 			</audio>
 			<div class="radar"></div>
@@ -90,6 +90,8 @@
 							boids[0]._holdingPattern = true;
 							boids[0]._leftDownWind = false;
 							boids[0]._rightDownWind = false;
+							var testString = "Great! As you can see " + airplanes[i][0] + " is performing the holding pattern." + "When you're ready, type 'next' to " + "go to the 'next' module." + "You can also try typing " + airplanes[i][0] + " resume normal flight plan";
+							playText(testString);
 							term.echo("Great! As you can see " + airplanes[i][0] );
 							term.echo(" is performing the holding pattern.");
 							term.echo(" ");
@@ -190,8 +192,7 @@
 			    }
 			});
 
-			var testString = "Hello World, I am Watson at your service";
-			console.log("About to parse text");
+			
 //			function getVoice(text) {
 //			    var audio = $.{"#player"};
 //			    audio[0].setAttribute()
@@ -216,10 +217,12 @@
                 audio[0].oncanplaythrough = audio[0].play();
 
             }
-			var nextString = "This the next voice to test the transition";
-            console.log("outputting voice");
-			playText(testString);
-            playText(nextString);
+   //          var testString = "Hello World, I am Watson at your service";
+			// console.log("About to parse text");
+			// var nextString = "This the next voice to test the transition";
+   //          console.log("outputting voice");
+			// playText(testString);
+   //          playText(nextString);
 			var scene = new THREE.Scene();
 
 			var SCREEN_WIDTH = window.innerWidth,
@@ -602,6 +605,11 @@
 						counter += 1;
 						if ((counter % 60) == 0) {
 							countSec += 1;
+
+							if (countSec == 1) {
+								var newString = "Welcome to Super Graphic Air Traffic. One of the most important parts of Air Traffic Controllers, is telling Planes when to do a Holding Pattern...Go ahead and try it now... Type or say...Boeing 737 follow holding pattern"
+								playText(newString);
+							}
 							console.log('test1');
 							console.log(commando[countSec]);
 							command = commando[countSec];
