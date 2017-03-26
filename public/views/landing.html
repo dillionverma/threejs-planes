@@ -88,7 +88,7 @@
 		        	</div>
 		        	<div class="col-md-8">
 		        		<h2>Landing Commands</h2>
-		        		<p>In order to land a plane, there's a few things you need to know. On a daily basis, a Air Traffic Controller will say commands such as "Left Down Wind" or "Right Down Wind". </p>
+		        		<p>In order to land a plane, there's a few things you need to know. On a daily basis, a Air Traffic Controller will say commands such as "Left Downwind" or "Right Downwind". </p>
 		        		<p>Here's an example. </p>
 		        		<img src="../img/left_down_wind.png" width="100%">
 		        	</div>
@@ -161,7 +161,7 @@
 							boids[i]._holdingPattern = false;
 							boids[i]._leftDownWind = false;
 							boids[i]._rightDownWind = false;
-						} else if ((cmd.includes('Left')) && (cmd.includes('Down Wind'))) {
+						} else if ((cmd.includes('Left')) && (cmd.includes('Downwind'))) {
 							boids[i]._holdingPattern = false;
 							boids[i]._leftDownWind = true;
 							boids[i]._rightDownWind = false;
@@ -290,7 +290,7 @@
 			commando[2] = "In order to land a plane";
 			commando[3] = "you need to know the following command ";
 			commando[4] = " ";
-			commando[5] = "Virgin Airlines 123 Left Down Wind";
+			commando[5] = "Virgin Airlines 123 Left Downwind";
 
 			for (var i = 0; i < 11; i++) {
 				if (commando[i] == undefined) {
@@ -687,7 +687,7 @@
 							countSec += 1;
 
 							if (countSec == 1) {
-								var newString = "Welcome to module 2. In order to land a plane you need to know the following command. Virgin Airlines 123 Left Down Wind";
+								var newString = "Welcome to module 2. In order to land a plane you need to know the following command. Virgin Airlines 123 Left Downwind";
 								playText(newString);
 							}
 							console.log('test1');
