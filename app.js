@@ -10,6 +10,22 @@ var users = require('./routes/users');
 
 var app = express();
 
+//Watson Text to Speech
+var TextToSpeechV1 = require('watson-developer-cloud/text-to-speech/v1');
+var text_to_speech = new TextToSpeechV1 ({
+  username: '4713f727-8eda-44ec-9cf0-da9e51f18ac8',
+  password: 'AkAxDEkCpbfG',
+  headers: {
+  'X-Watson-Learning-Opt-Out': 'true'
+  }
+});
+var params = {
+  text: 'Hello world',
+  voice: 'en-US_AllisonVoice',
+  accept: 'audio/wav'
+};
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
