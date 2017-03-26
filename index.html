@@ -27,6 +27,8 @@
 
 			<div class="console">
 				<input type="text" name="test" id="console-input">
+				<button id="startButtonId">Play</button>
+				<button id="pauseButtonId">Pause</button>
 			</div>
 
 		</div>
@@ -50,6 +52,8 @@
 
 
 		<script>
+
+
 
 			$('#console-input').bind("enterKey",function(e){
 				if (Math.sqrt(boids[0].velocity.x^2 + boids[0].velocity.z^2) < boids[0]._minSpeed) {
@@ -128,6 +132,13 @@
 			var counter = 0;
 			var leftDownWindCounter = 1;
 			var rightDownWindCounter = 1;
+
+			$('#pauseButtonId').click(function() {
+				planeWorking = false;
+			})
+			$('#startButtonId').click(function() {
+				planeWorking = true;
+			})
 
 			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
 			scene.add(ground);*/
@@ -443,17 +454,21 @@
 				}
 				function animate() {
 
+
+
 					counter += 1;
 
 					requestAnimationFrame( animate );
 
 					controls.update();
+
 					if (planeWorking) {
+					
 						for ( var i = 0, il = boids.length; i < il; i++ ) {
 
 							boid = boids[ i ];
 							boid.run( boids );
-
+ 
 
 							bird = birds[ i ];
 							bird.position.copy( boids[ i ].position );
@@ -648,11 +663,11 @@
 					}
 
 
-
 					render();
 				}
 
 				function render() {
+					if (!planeWorking) return;
 					renderer.render( scene, camera );
 				  // effect.render(scene, camera);
 				}
