@@ -52,7 +52,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Meet Tim, the Air Traffic Controller</h4>
+		        <h4 class="modal-title" id="myModalLabel">Module 2!</h4>
 		      </div>
 		      <div class="modal-body">
 		        <div class="row">
@@ -60,9 +60,9 @@
 		        		<img src="../img/tim.png" width="100%">
 		        	</div>
 		        	<div class="col-md-8">
-		        		<h2>Hey there !</h2>
-		        		<p>My name's Tim</p>
-		        		<p>I'll be your designated Air Traffic Controller Manager today. We'll get you up to speed in no time ;) </p>
+		        		<h2>Landing?</h2>
+		        		<p>Hey guys</p>
+		        		<p>Today you'll learn how an aircraft controller lands an airplane. </p>
 		        	</div>
 		        </div>
 		      </div>
@@ -79,7 +79,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Getting started</h4>
+		        <h4 class="modal-title" id="myModalLabel">Commands</h4>
 		      </div>
 		      <div class="modal-body">
 		        <div class="row">
@@ -87,10 +87,10 @@
 		        		<img src="../img/tim.png" width="100%">
 		        	</div>
 		        	<div class="col-md-8">
-		        		<h2>First thing's first.</h2>
-		        		<p>Air Traffic Controllers are one of the most important jobs to ensure the safety and security of airports all over the world.</p>
-		        		<p>Today we'll take a look at what it's like to be an air traffic controller. </p>
-		        		<img src="../img/air-traffic-tower.png" width="100%">
+		        		<h2>Landing Commands</h2>
+		        		<p>In order to land a plane, there's a few things you need to know. On a daily basis, a Air Traffic Controller will say commands such as "Left Down Wind" or "Right Down Wind". </p>
+		        		<p>Here's an example. </p>
+		        		<img src="../img/left_down_wind.png" width="100%">
 		        	</div>
 		        </div>
 		      </div>
@@ -146,6 +146,7 @@
 							boids[i]._holdingPattern = true;
 							boids[i]._leftDownWind = false;
 							boids[i]._rightDownWind = false;
+
 							var testString = "Great! As you can see " + airplanes[i][0] + " is performing the holding pattern." + "When you're ready, type 'next' to " + "go to the 'next' module." + "You can also try typing " + airplanes[i][0] + " resume normal flight plan";
 							playText(testString);
 							term.echo("Great! As you can see " + airplanes[i][0] );
@@ -285,15 +286,11 @@
 
 			var commando = [];
 
-			commando[1] = "Welcome to Super Graphic Air Traffic";
-			commando[2] = "One of the most important parts of";
-			commando[3] = "Air Traffic Controllers, is telling ";
-			commando[4] = "Planes when to do a Holding Pattern ";
-			commando[5] = " ";
-			commando[6] = "Go ahead and try it now";
-			commando[7] = "Type (or say): ";
-			commando[8] = " ";
-			commando[9] = "Boeing 737 follow holding pattern";
+			commando[1] = "Welcome to module 2";
+			commando[2] = "In order to land a plane";
+			commando[3] = "you need to know the following command ";
+			commando[4] = " ";
+			commando[5] = "Virgin Airlines 123 Left Down Wind";
 
 			for (var i = 0; i < 11; i++) {
 				if (commando[i] == undefined) {
@@ -489,7 +486,7 @@
 						boid.velocity.y = 0;
 						boid.velocity.z = airplanes[i][5];
 
- 				    	bird = birds[i] = collada.scene
+ 				    	bird = birds[i] = collada.scene.clone();
  				    	// bird.phase = Math.floor( Math.random() * 62.83 );
 						bird.scale.set(0.05,0.05,0.05);
 						scene.add(bird);
@@ -505,10 +502,10 @@
 						// loader = new THREE.ColladaLoader();
 						// console.log('testing again1');
 	 				//     loader.load('assets/models/3d-model.dae',function colladaReady( collada ){
-	 				    	bird = birds[i] = collada.scene
-	 				    	// bird.phase = Math.floor( Math.random() * 62.83 );
-							bird.scale.set(0.05,0.05,0.05);
-							scene.add(bird);
+	 				 //    	bird = birds[i] = collada.scene
+	 				 //    	// bird.phase = Math.floor( Math.random() * 62.83 );
+							// bird.scale.set(0.05,0.05,0.05);
+							// scene.add(bird);
 
 								//   	console.log(bird);
 								//   	console.log(birds[i]);
@@ -690,7 +687,7 @@
 							countSec += 1;
 
 							if (countSec == 1) {
-								var newString = "Welcome to Super Graphic Air Traffic. One of the most important parts of Air Traffic Controllers, is telling Planes when to do a Holding Pattern...Go ahead and try it now... Type or say...Boeing 737 follow holding pattern"
+								var newString = "Welcome to module 2. In order to land a plane you need to know the following command. Virgin Airlines 123 Left Down Wind";
 								playText(newString);
 							}
 							console.log('test1');
