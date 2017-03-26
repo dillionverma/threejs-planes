@@ -10,7 +10,7 @@
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
-
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/css/jquery.terminal.min.css" rel="stylesheet"/>
 	</head>
 	<body>
 
@@ -68,7 +68,9 @@
 		<script src="../js/DeviceOrientationControls.js"></script>
 		<script src="../js/OrbitControls.js"></script>
 		<script src="../js/Bird.js"></script>
-		<script type="text/javascript" src="jquery.terminal-1.0.15.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/js/jquery.terminal.min.js"></script>
+
+
 
 
 		<script>
@@ -76,7 +78,56 @@
 
 			$(document).ready(function() {
 				$('#myModal').modal('toggle');
+				
 			})
+
+
+			var terminal = $('.console').terminal(function(cmd, term) {
+				for (var i = 0; i < airplanes.length; i++) {
+					if (cmd.includes(airplanes[i][0])) {
+						if ((cmd.includes('Holding Pattern')) || (cmd.includes('holding pattern'))) {
+							boids[0]._holdingPattern = true;
+							boids[0]._leftDownWind = false;
+							boids[0]._rightDownWind = false;
+							term.echo("Great! As you can see " + airplanes[i][0] );
+							term.echo(" is performing the holding pattern.");
+							term.echo(" ");
+							term.echo("When you're ready, type 'next' to ");
+							term.echo("go to the 'next' module.");
+							term.echo(" ");
+							term.echo("You can also try typing " + airplanes[i][0] );
+							term.echo(" resume normal flight plan");
+						} else if ((cmd.includes('Resume Normal')) || (cmd.includes('resume normal'))) {
+							boids[0]._holdingPattern = false;
+							boids[0]._leftDownWind = false;
+							boids[0]._rightDownWind = false;
+						} else if ((cmd.includes('Next')) || (cmd.includes('next'))) {
+							window.location.replace("http://www.w3schools.com");
+						} else {
+							term.echo("Command not recognized.")
+						}
+					}
+				}
+				// if (cmd == )
+
+			 //    if (cmd == 'help') {
+			 //      term.echo("available commands are mysql, js, test");
+			 //    } else if (cmd == 'test'){
+			 //      term.push(function(cmd, term) {
+			 //        if (command == 'help') {
+			 //          term.echo('type "ping" it will display "pong"');
+			 //        } else if (cmd == 'ping') {
+			 //          term.echo('pong');
+			 //        } else {
+			 //          term.echo('unknown command "' + cmd + '"');
+			 //        }
+			 //      }, {
+			 //        prompt: 'test> ',
+			 //        name: 'test'});
+			 //    } else {
+			 //    	term.echo('test');
+			 //    }
+			}); 
 
 
 
@@ -184,12 +235,14 @@
 			var commando = [];
 
 			commando[1] = "Welcome to Super Graphic Air Traffic";
-			commando[3] = "One of the most important parts of";
-			commando[4] = "Air Traffic Controllers, is telling ";
-			commando[8] = "Planes when to do a Holding Pattern ";
-			commando[9] = "Go ahead and try it now";
-			commando[10] = "Type (or say): ";
-			commando[11] = "Boeing 737 follow holding pattern";
+			commando[2] = "One of the most important parts of";
+			commando[3] = "Air Traffic Controllers, is telling ";
+			commando[4] = "Planes when to do a Holding Pattern ";
+			commando[5] = " ";
+			commando[6] = "Go ahead and try it now";
+			commando[7] = "Type (or say): ";
+			commando[8] = " ";
+			commando[9] = "Boeing 737 follow holding pattern";
 
 			for (var i = 0; i < 11; i++) {
 				if (commando[i] == undefined) {
@@ -524,7 +577,12 @@
 							command = commando[countSec];
 							if (countSec < commando.length && typeof commando[countSec] != undefined) {
 								console.log('test');
-								$('.console').append("<p class='console-message'>" + commando[countSec] + "</p>");
+								terminal.echo(commando[countSec], {
+								    finalize: function(div) {
+								        div.css("color", "white");
+								    }
+								});
+								// $('.console').append("<p class='console-message'>" + commando[countSec] + "</p>");
 							}
 						}
 

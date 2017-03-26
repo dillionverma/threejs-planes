@@ -83,6 +83,7 @@ a {
 }
 
 #console-input {
+	display:none;
 	width:100%;
 	position:absolute;
 	bottom:0px;
@@ -91,10 +92,10 @@ a {
 }
 
 .console {
-	width:300px;
-	position:fixed;
-	bottom:0;
-	right:0;
+	width:350px;
+	position:fixed !important;
+	bottom:0 !important;
+	right:0 !important;
 	color:white;
 	height: 300px;
 	background-color: rgba(0,0,0,0.3);
