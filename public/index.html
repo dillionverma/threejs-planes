@@ -402,9 +402,9 @@
 	          if (!e.alpha) {
 	            return;
 	          }
-	          controls1 = new THREE.DeviceOrientationControls(camera, true);
-	          controls1.connect();
-	          controls1.update();
+	          controls = new THREE.DeviceOrientationControls(camera, true);
+	          controls.connect();
+	          controls.update();
 	          element.addEventListener('click', fullscreen, false);
 	          window.removeEventListener('deviceorientation', setOrientationControls, true);
 	        }
