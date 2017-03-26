@@ -11,19 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 		
-		<style type="text/css">
-			body {
-				margin:0;
 
-			}
-			.console {
-				width:200px;
-				position:fixed;
-				bottom:0;
-				right:0;
-				color:white;
-			}
-		</style>
 	</head>
 	<body>
 
@@ -32,7 +20,7 @@
 			<a href="#" id="pauseButtonId"><i class="fa fa-pause"></i></a>
 			<div class="console-display"></div>
 			<div class="console">
-				<input type="text" name="test" id="console-input">
+				<input type="text" name="test" id="console-input" placeholder="Type Commands (Or speak commands)">
 				
 			</div>
 
@@ -161,7 +149,7 @@
 				controls,
 				renderer,
 				birds,
-				bird, centerOffset;
+				bird, centerOffset, countSec;
 
 			var boid, boids, mishs;
 
@@ -185,6 +173,10 @@
 			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
 			scene.add(ground);*/
 			var airplanes = [ ["Boeing 737", 800, 100, 700, -0.5, -0.5] ]
+
+			var commands = [  ["Welcome to Super Graphic Air Traffic", 3],
+							  ["One of the most important parts of", 6] ]
+
 			// var names = [
 			// 	"Boeing 737",
 			// 	"Virgin Airlines 123",
@@ -452,16 +444,16 @@
 					// element.addEventListener('click', fullscreen, false);
 
 					function setOrientationControls(e) {
-	          if (!e.alpha) {
-	            return;
-	          }
-	          controls = new THREE.DeviceOrientationControls(camera, true);
-	          controls.connect();
-	          controls.update();
-	          element.addEventListener('click', fullscreen, false);
-	          window.removeEventListener('deviceorientation', setOrientationControls, true);
-	        }
-	        window.addEventListener('deviceorientation', setOrientationControls, true);
+			          if (!e.alpha) {
+			            return;
+			          }
+			          controls = new THREE.DeviceOrientationControls(camera, true);
+			          controls.connect();
+			          controls.update();
+			          element.addEventListener('click', fullscreen, false);
+			          window.removeEventListener('deviceorientation', setOrientationControls, true);
+			        }
+			        window.addEventListener('deviceorientation', setOrientationControls, true);
 
 					window.addEventListener( 'resize', onWindowResize, false );
 					onWindowResize();
@@ -496,17 +488,22 @@
 					}
 				}
 				function animate() {
-
-
-
-					counter += 1;
-
+					
 					requestAnimationFrame( animate );
 
 					controls.update();
 
 					if (planeWorking) {
-					
+
+						counter += 1;
+						if ((counter % 60) == 0) {
+							countSec += 1;
+						}
+
+						if (countSec == 3) {
+
+						}
+						
 						for ( var i = 0, il = boids.length; i < il; i++ ) {
 
 							boid = boids[ i ];
@@ -525,10 +522,6 @@
 							mish.position.x += centerOffset;
 
 							mish.rotation.copy( camera.rotation );
-
-
-
-
 
 							// color = bird.material.color;
 							// //	color.r = color.g = color.b = ( 500 - bird.position.z ) / 1000;
