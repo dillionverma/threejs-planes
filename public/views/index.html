@@ -405,7 +405,15 @@
 
 					scene.add(skyboxMesh);
 
-
+					var airport = loader.load(
+						'../assets/airport.png',
+						function(airport) {
+							var airportMaterial = new THREE.MeshBasicMaterial({map: airport});
+							var mesh = new THREE.Mesh(new THREE.BoxGeometry(1000,600,1), airportMaterial);
+							mesh.position.y = -249;
+							mesh.rotation.x = Math.PI/2;
+							scene.add(mesh);
+						});
 
 					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, .1, 5000 );
 					camera.position.set( 0, 0, -500 );
