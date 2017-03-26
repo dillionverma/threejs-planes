@@ -97,6 +97,7 @@
 				}
 
 			   
+
 			});
 			$('#console-input').keyup(function(e){
 			    if(e.keyCode == 13)
@@ -315,12 +316,20 @@
 					}
 
 
-					
 
+					var spotLight = new THREE.SpotLight( 0xffffff );
+					spotLight.position.set( 100, 1000, 100 );
 
+					spotLight.castShadow = false;
 
+					spotLight.shadow.mapSize.width = 1024;
+					spotLight.shadow.mapSize.height = 1024;
 
+					spotLight.shadow.camera.near = 500;
+					spotLight.shadow.camera.far = 400;
+					spotLight.shadow.camera.fov = 30;
 
+					scene.add( spotLight );
 
 					controls = new THREE.OrbitControls( camera,  renderer.domElement  );
 					controls.enableDamping = true;
@@ -336,8 +345,6 @@
 
 
 
-
-				
 
 				function onWindowResize() {
 
@@ -370,7 +377,6 @@
 					requestAnimationFrame( animate );
 
 					controls.update();
-
 					if (planeWorking) {
 						for ( var i = 0, il = boids.length; i < il; i++ ) {
 
@@ -388,6 +394,9 @@
 							// 	boid.trail_material.uniforms.color.value = color;
 
 							bird.rotation.y = Math.atan2( - boid.velocity.z, boid.velocity.x ) + 1.6;
+
+
+							// bird.rotation.y += Math.atan2( - boid.velocity.z, boid.velocity.x );
 							bird.rotation.z = Math.asin( boid.velocity.y / boid.velocity.length() );
 
 							bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z ) + 0.1 ) ) % 62.83;
@@ -427,7 +436,7 @@
 									} else {
 										boid.velocity.x = 0;
 									}
-									
+
 									boid.velocity.z -= 0.005;
 								} else if (boid._holdingSequence == 4) {
 									if (boid.velocity.z >= 0) {
@@ -436,9 +445,9 @@
 										boid.velocity.z = 0;
 									}
 									boid.velocity.x -= 0.005;
-									
+
 								}
-							} 
+							}
 
 							if (boid._rightDownWind) {
 								if ((counter % 180) == 0) {
@@ -474,7 +483,7 @@
 									} else {
 										boid.velocity.x = 0;
 									}
-									
+
 									boid.velocity.z -= (0.0005 * leftDownWindCounter);
 								} else if (boid._holdingSequence == 4) {
 									if (boid.velocity.z >= 0) {
@@ -483,7 +492,7 @@
 										boid.velocity.z = 0;
 									}
 									boid.velocity.x -= (0.0005 * leftDownWindCounter);
-									
+
 								}
 								console.log('test');
 							}
@@ -525,7 +534,7 @@
 									} else {
 										boid.velocity.x = 0;
 									}
-									
+
 									boid.velocity.z += (0.0005 * leftDownWindCounter);
 								} else if (boid._holdingSequence == 4) {
 									console.log('sequence 4');
@@ -535,7 +544,7 @@
 										boid.velocity.x = 0;
 									}
 									boid.velocity.x -= (0.0005 * leftDownWindCounter);
-									
+
 								}
 								console.log('test1');
 							}
@@ -549,7 +558,7 @@
 						}
 					}
 
-					
+
 
 					render();
 				}
