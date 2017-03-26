@@ -143,9 +143,9 @@
 				for (var i = 0; i < airplanes.length; i++) {
 					if (cmd.includes(airplanes[i][0])) {
 						if ((cmd.includes('Holding Pattern')) || (cmd.includes('holding pattern'))) {
-							boids[0]._holdingPattern = true;
-							boids[0]._leftDownWind = false;
-							boids[0]._rightDownWind = false;
+							boids[i]._holdingPattern = true;
+							boids[i]._leftDownWind = false;
+							boids[i]._rightDownWind = false;
 							var testString = "Great! As you can see " + airplanes[i][0] + " is performing the holding pattern." + "When you're ready, type 'next' to " + "go to the 'next' module." + "You can also try typing " + airplanes[i][0] + " resume normal flight plan";
 							playText(testString);
 							term.echo("Great! As you can see " + airplanes[i][0] );
@@ -157,9 +157,14 @@
 							term.echo("You can also try typing " + airplanes[i][0] );
 							term.echo(" resume normal flight plan");
 						} else if ((cmd.includes('Resume Normal')) || (cmd.includes('resume normal'))) {
-							boids[0]._holdingPattern = false;
-							boids[0]._leftDownWind = false;
-							boids[0]._rightDownWind = false;
+							boids[i]._holdingPattern = false;
+							boids[i]._leftDownWind = false;
+							boids[i]._rightDownWind = false;
+						} else if ((cmd.includes('Left')) && (cmd.includes('Down Wind'))) {
+							boids[i]._holdingPattern = false;
+							boids[i]._leftDownWind = false;
+							boids[i]._rightDownWind = false;
+							boids[i]._landing = true;
 						}
 					}
 					if (cmd.includes('Next') || cmd.includes('next')) {
@@ -239,6 +244,18 @@
 
 			var boid, boids, mishs;
 
+			var bezzierFound = false;
+
+			var bezzierFound1 = false;
+			var bezzierFound2 = false;
+			var bezzierFound3 = false;
+			var bezzierFound4 = false;
+
+
+			var spheres = [];
+
+			var curves = [];
+
 			var counter = 0;
 			var countSec = 0;
 			var leftDownWindCounter = 1;
@@ -304,7 +321,7 @@
 
 					var vector = new THREE.Vector3(),
 					_acceleration, _width = 500, _height = 500, _depth = 200, _goal, _neighborhoodRadius = 100,
-					_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = false, _minSpeed = 0.7, _targetAltitude = 150;
+					_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = false, _minSpeed = 0.7, _targetAltitude = 150, _landing = false;
 
 
 					this.callsign = new String();
@@ -546,21 +563,39 @@
 
 
 
-					curve = new THREE.CubicBezierCurve3(
-                        new THREE.Vector3( 800, 100, 700 ),
-                        new THREE.Vector3( 700, 100, 600 ),
-                        new THREE.Vector3( -400, -250, 50 ),
-                        new THREE.Vector3( -2000, -250, 0 )
-                    );
+					
 
-                    var geometry = new THREE.Geometry();
-                    geometry.vertices = curve.getPoints( 50 );
 
-                    var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
 
-                    // Create the final object to add to the scene
-                    var curveObject = new THREE.Line( geometry, material );
-                    scene.add(curveObject);
+					
+
+
+					// sphere
+					var geometry = new THREE.SphereGeometry( 5, 32, 32 );
+					var material = new THREE.MeshBasicMaterial( {color: 0xff0000} );
+					var sphere = spheres[1] = new THREE.Mesh( geometry, material );
+					scene.add( sphere );
+					sphere.position.x -= 300;
+					sphere.position.y -= 100;
+					// sphere.position.z -= 100;
+
+
+					// sphere
+					var geometry = new THREE.SphereGeometry( 5, 32, 32 );
+					var material = new THREE.MeshBasicMaterial( {color: 0xff0000} );
+					var sphere = spheres[0] = new THREE.Mesh( geometry, material );
+					scene.add( sphere );
+					sphere.position.y -= 200;
+
+
+					// sphere
+					var geometry = new THREE.SphereGeometry( 5, 32, 32 );
+					var material = new THREE.MeshBasicMaterial( {color: 0xff0000} );
+					var sphere = spheres[2] = new THREE.Mesh( geometry, material );
+					scene.add( sphere );
+					sphere.position.x += 300;
+					// sphere.position.y -= 200;
+					// sphere.position.z -= 100;
 
 
 
@@ -590,6 +625,24 @@
 					window.addEventListener( 'resize', onWindowResize, false );
 					onWindowResize();
 
+				}
+
+				function setCubicBezier(x1,y1,z1,x2,y2,z2,x3,y3,z3,x4,y4,z4){
+					curve = curves[0] = new THREE.CubicBezierCurve3(
+                        new THREE.Vector3( x1, y1, z1 ),
+                        new THREE.Vector3( x2, y2, z2 ),
+                        new THREE.Vector3( x3, y3, z3 ),
+                        new THREE.Vector3( x4, y4, z4 )
+                    );
+
+                    var geometry = new THREE.Geometry();
+                    geometry.vertices = curve.getPoints( 50 );
+
+                    var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+
+                    // Create the final object to add to the scene
+                    var curveObject = new THREE.Line( geometry, material );
+                    scene.add(curveObject);
 				}
 
 
@@ -842,6 +895,31 @@
 								boid.position.y += 0.2;
 							} else if (boid._targetAltitude < boid.position.y) {
 								boid.position.y -= 0.2;
+							}
+
+							if (boid._landing) {
+								if (bezzierFound == false) {
+									setCubicBezier(boid.position.x,boid.position.y,boid.position.z,spheres[2].position.x,spheres[2].position.y,spheres[2].position.z,spheres[1].position.x,spheres[1].position.y,spheres[1].position.z,spheres[0].position.x,spheres[0].position.y,spheres[0].position.z);
+									bezzierFound = true;
+									bezzierFound1 = true;
+								}
+								// if (bezzierFound2 == false) {
+									
+								// 	if ()
+
+								// } else if (bezzierFound3 == false) {
+
+								// } else if (bezzierFound4 == false) {
+
+								// } else {
+
+								// }
+
+								console.log(curves[0]);
+
+								console.log(curves[0].v0.x)
+
+
 							}
 
 						}
