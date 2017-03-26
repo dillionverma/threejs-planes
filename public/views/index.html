@@ -10,7 +10,6 @@
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
-		
 
 	</head>
 	<body>
@@ -18,11 +17,17 @@
 		<div id="container">
 			<a id="startButtonId"><i class="fa fa-play"></i></a>
 			<a id="pauseButtonId"><i class="fa fa-pause"></i></a>
-			<div class="console-display"></div>
+
 			<div class="console">
+
 				<input type="text" name="test" id="console-input" placeholder="Type Commands (Or speak commands)">
-				
+
 			</div>
+
+			<div class="radar"></div>
+
+
+			
 
 		</div>
 		<div id="title">
@@ -489,7 +494,7 @@
 					}
 				}
 				function animate() {
-					
+
 					requestAnimationFrame( animate );
 
 					controls.update();
@@ -501,15 +506,13 @@
 							countSec += 1;
 						}
 
-						if (countSec == 3) {
 
-						}
-						
+
 						for ( var i = 0, il = boids.length; i < il; i++ ) {
 
 							boid = boids[ i ];
 							boid.run( boids );
- 
+
 
 							bird = birds[ i ];
 							bird.position.copy( boids[ i ].position );
@@ -706,7 +709,7 @@
 				}
 
 				function render() {
-					
+
 					if (!planeWorking) return;
 					renderer.render( scene, camera );
 					if (!firstRun) {
@@ -714,7 +717,7 @@
 						if (firstCounter == 10) {
 							planeWorking = false;
 						}
-					} 
+					}
 				  //effect.render(scene, camera);
 				}
 				function findPlane(callsign) {
