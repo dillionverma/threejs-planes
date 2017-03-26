@@ -1,6 +1,6 @@
 body {
-  // padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	margin:0;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -93,4 +93,21 @@ a {
     background: radial-gradient(2vmin circle at 75% 70%, #ffffff 10%, #20ff4d 30%, rgba(255, 255, 255, 0) 100%), radial-gradient(2vmin circle at 63% 72%, #ffffff 10%, #20ff4d 30%, rgba(255, 255, 255, 0) 100%), radial-gradient(2vmin circle at 56% 86%, #ffffff 10%, #20ff4d 30%, rgba(255, 255, 255, 0) 100%);
     opacity: 0;
   }
+
+#console-input {
+	width:100%;
+	position:absolute;
+	bottom:0px;
+	padding:10px;
+	color:#000;
+}
+
+.console {
+	width:300px;
+	position:fixed;
+	bottom:0;
+	right:0;
+	color:white;
+	height: 300px;
+	background-color: rgba(0,0,0,0.3);
 }
