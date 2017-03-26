@@ -91,6 +91,11 @@
 					boids[0]._rightDownWind = false;
 				}
 
+				if ($('#console-input').val().includes("a")) {
+					boids[0]._targetAltitude = $('#console-input').val().split(" ")[1];
+					console.log($('#console-input').val().split(" ")[1]);
+				}
+
 			   
 			});
 			$('#console-input').keyup(function(e){
@@ -145,7 +150,7 @@
 
 					var vector = new THREE.Vector3(),
 					_acceleration, _width = 500, _height = 500, _depth = 200, _goal, _neighborhoodRadius = 100,
-					_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = false, _minSpeed = 0.7;
+					_maxSpeed = 4, _maxSteerForce = 0.1, _avoidWalls = false, _holdingPattern = false, _holdingTime = 0, _holdingSequence = 0, _acceleration = 0, _maxSpeed = 4, _maxSteerForce = 0.1, _leftDownWind = false, _rightDownWind = false, _minSpeed = 0.7, _targetAltitude = 150;
 
 
 					this.callsign = callsign;
@@ -299,6 +304,7 @@
 	 				    	// bird.phase = Math.floor( Math.random() * 62.83 );
 							bird.scale.set(0.05,0.05,0.05);
 							scene.add(bird);
+
 	 				    	console.log(bird);
 	 				    	console.log(birds[i]);
 	 				        // bird = birds [i]  = collada.scene;
@@ -307,6 +313,11 @@
 	 				        planeWorking = true;
 	 			        // });
 					}
+
+
+					
+
+
 
 
 
@@ -322,6 +333,9 @@
 					onWindowResize();
 
 				}
+
+
+
 
 				
 
@@ -360,10 +374,6 @@
 					if (planeWorking) {
 						for ( var i = 0, il = boids.length; i < il; i++ ) {
 
-
-
-
-
 							boid = boids[ i ];
 							boid.run( boids );
 
@@ -377,19 +387,16 @@
 							// if (boid.trail_initialized)
 							// 	boid.trail_material.uniforms.color.value = color;
 
-							bird.rotation.y = Math.atan2( - boid.velocity.z, boid.velocity.x );
+							bird.rotation.y = Math.atan2( - boid.velocity.z, boid.velocity.x ) + 1.6;
 							bird.rotation.z = Math.asin( boid.velocity.y / boid.velocity.length() );
 
-							bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z ) + 0.1 )  ) % 62.83;
+							bird.phase = ( bird.phase + ( Math.max( 0, bird.rotation.z ) + 0.1 ) ) % 62.83;
 							// bird.geometry.vertices[ 5 ].y = bird.geometry.vertices[ 4 ].y = Math.sin( bird.phase ) * 5;
 
 
 
 
 							if (boid._holdingPattern) {
-								console.log("break");
-								console.log(boid.velocity.x);
-								console.log(boid.velocity.z);
 
 								if (boid.velocity.x > 0 && boid.velocity.z > 0) {
 									boid._holdingSequence = 1;
@@ -531,6 +538,12 @@
 									
 								}
 								console.log('test1');
+							}
+
+							if (boid._targetAltitude > boid.position.y) {
+								boid.position.y += 0.2;
+							} else if (boid._targetAltitude < boid.position.y) {
+								boid.position.y -= 0.2;
 							}
 
 						}
