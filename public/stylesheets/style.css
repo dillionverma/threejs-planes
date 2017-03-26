@@ -105,3 +105,11 @@ a {
 .console-message {
 	vertical-align: text-bottom;
 }
+
+.terminal {
+  background: rgba(0,0,0,0.7) !important;
+}
+
+.cmd {
+  background: rgba(0,0,0,0.7) !important;
+}

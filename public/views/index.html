@@ -49,14 +49,50 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+		        <h4 class="modal-title" id="myModalLabel">Meet Tim, the Air Traffic Controller</h4>
 		      </div>
 		      <div class="modal-body">
-		        ...
+		        <div class="row">
+		        	<div class="col-md-4">
+		        		<img src="../img/tim.png" width="100%">
+		        	</div>
+		        	<div class="col-md-8">
+		        		<h2>Hey there !</h2>
+		        		<p>My name's Tim</p>
+		        		<p>I'll be your designated Air Traffic Controller Manager today. We'll get you up to speed in no time ;) </p>
+		        	</div>
+		        </div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Save changes</button>
+		        <button type="button" class="btn btn-primary modal-next-1">Next</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Getting started</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div class="row">
+		        	<div class="col-md-4">
+		        		<img src="../img/tim.png" width="100%">
+		        	</div>
+		        	<div class="col-md-8">
+		        		<h2>First thing's first.</h2>
+		        		<p>Air Traffic Controllers are one of the most important jobs to ensure the safety and security of airports all over the world.</p>
+		        		<p>Today we'll take a look at what it's like to be an air traffic controller. </p>
+		        		<img src="../img/air-traffic-tower.png" width="100%">
+		        	</div>
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default modal-next-2" data-dismiss="modal">Start</button>
 		      </div>
 		    </div>
 		  </div>
@@ -86,6 +122,17 @@
 			$(document).ready(function() {
 				$('#myModal').modal('toggle');
 
+				$('.modal-next-1').click(function() {
+					$('#myModal').modal('toggle');
+					$('#myModal2').modal('toggle');
+				});
+
+				$('.modal-next-2').click(function() {
+					$('#myModal2').modal('toggle');
+					planeWorking = true;
+					$(this).hide();
+					$("#pauseButtonId").show();
+				})
 			})
 
 
@@ -135,66 +182,6 @@
 			 //    	term.echo('test');
 			 //    }
 			}); 
-
-
-
-			$('#console-input').bind("enterKey",function(e){
-				if (Math.sqrt(boids[0].velocity.x^2 + boids[0].velocity.z^2) < boids[0]._minSpeed) {
-					var multiplier = boids[0].minSpeed / Math.sqrt(boids[0].velocity.x^2 + boids[0].velocity.z^2)
-					boids[0].velocity.x *= multiplier;
-					boids[0].velocity.z *= multiplier;
-				}
-
-				if ($('#console-input').val() == 'k') {
-					boids[0]._holdingPattern = true;
-					boids[0]._leftDownWind = false;
-					boids[0]._rightDownWind = false;
-				} else if ($('#console-input').val() == 'j')  {
-					boids[0]._holdingPattern = false;
-					boids[0]._leftDownWind = false;
-					boids[0]._rightDownWind = false;
-				}
-
-				if ($('#console-input').val() == 'l') {
-					boids[0]._holdingPattern = false;
-					boids[0]._leftDownWind = true;
-					boids[0]._rightDownWind = false;
-					var leftDownWindCounter = 1;
-					var rightDownWindCounter = 1;
-				} else if ($('#console-input').val() == 'll')  {
-					boids[0]._holdingPattern = false;
-					boids[0]._leftDownWind = false;
-					boids[0]._rightDownWind = false;
-				}
-
-				if ($('#console-input').val() == 'r') {
-					boids[0]._holdingPattern = false;
-					boids[0]._leftDownWind = false;
-					boids[0]._rightDownWind = true;
-					var leftDownWindCounter = 1;
-					var rightDownWindCounter = 1;
-				} else if ($('#console-input').val() == 'rr')  {
-					boids[0]._holdingPattern = false;
-					boids[0]._leftDownWind = false;
-					boids[0]._rightDownWind = false;
-				}
-
-				if ($('#console-input').val().includes("a")) {
-					boids[0]._targetAltitude = $('#console-input').val().split(" ")[1];
-					console.log($('#console-input').val().split(" ")[1]);
-				}
-
-				$('#myModal').modal('show');
-
-
-
-			});
-			$('#console-input').keyup(function(e){
-			    if(e.keyCode == 13)
-			    {
-			        $(this).trigger("enterKey");
-			    }
-			});
 
 
 			var scene = new THREE.Scene();
@@ -513,6 +500,27 @@
 					spotLight.shadow.camera.fov = 30;
 
 					scene.add( spotLight );
+
+
+
+					curve = new THREE.CubicBezierCurve3(
+                        new THREE.Vector3( 800, 100, 700 ),
+                        new THREE.Vector3( 700, 100, 600 ),
+                        new THREE.Vector3( -400, -250, 50 ),
+                        new THREE.Vector3( -2000, -250, 0 )
+                    );
+
+                    var geometry = new THREE.Geometry();
+                    geometry.vertices = curve.getPoints( 50 );
+
+                    var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+
+                    // Create the final object to add to the scene
+                    var curveObject = new THREE.Line( geometry, material );
+                    scene.add(curveObject);
+
+
+
 
 					controls = new THREE.OrbitControls( camera,  renderer.domElement  );
 					controls.enableDamping = true;
