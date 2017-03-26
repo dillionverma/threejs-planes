@@ -162,9 +162,14 @@
 							boids[i]._rightDownWind = false;
 						} else if ((cmd.includes('Left')) && (cmd.includes('Down Wind'))) {
 							boids[i]._holdingPattern = false;
-							boids[i]._leftDownWind = false;
+							boids[i]._leftDownWind = true;
 							boids[i]._rightDownWind = false;
 							boids[i]._landing = true;
+						} else if ((cmd.includes('Altitude')) ) {
+							var str = cmd;
+							var n = str.lastIndexOf('/');
+							var result = str.substring(n + 1);
+							boid._targetAltitude = result;
 						}
 					}
 					if (cmd.includes('Next') || cmd.includes('next')) {
@@ -904,8 +909,24 @@
 									bezzierFound1 = true;
 								}
 								// if (bezzierFound2 == false) {
-									
-								// 	if ()
+								// 	console.log('testing stuff');
+								// 	if (curves[0].v1.x > boid.position.x) {
+								// 		boid.velocity.x += 0.05;
+								// 	} else if (curves[0].v0.x < boid.position.x) {
+								// 		boid.velocity.x -= 0.05;	
+								// 	} 
+
+								// 	if (curves[0].v1.y > boid.position.y) {
+								// 		boid.velocity.y += 0.05;
+								// 	} else if (curves[0].v0.y < boid.position.y) {
+								// 		boid.velocity.y -= 0.05;	
+								// 	} 
+
+								// 	if (curves[0].v1.z > boid.position.z) {
+								// 		boid.velocity.z += 0.05;
+								// 	} else if (curves[0].v0.z < boid.position.z) {
+								// 		boid.velocity.z -= 0.05;	
+								// 	} 
 
 								// } else if (bezzierFound3 == false) {
 
@@ -915,9 +936,9 @@
 
 								// }
 
-								console.log(curves[0]);
+								// console.log(curves[0]);
 
-								console.log(curves[0].v0.x)
+								// console.log(curves[0].v0.x)
 
 
 							}

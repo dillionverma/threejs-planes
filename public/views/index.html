@@ -143,9 +143,9 @@
 				for (var i = 0; i < airplanes.length; i++) {
 					if (cmd.includes(airplanes[i][0])) {
 						if ((cmd.includes('Holding Pattern')) || (cmd.includes('holding pattern'))) {
-							boids[0]._holdingPattern = true;
-							boids[0]._leftDownWind = false;
-							boids[0]._rightDownWind = false;
+							boids[i]._holdingPattern = true;
+							boids[i]._leftDownWind = false;
+							boids[i]._rightDownWind = false;
 							var testString = "Great! As you can see " + airplanes[i][0] + " is performing the holding pattern." + "When you're ready, type 'next' to " + "go to the 'next' module." + "You can also try typing " + airplanes[i][0] + " resume normal flight plan";
 							playText(testString);
 							term.echo("Great! As you can see " + airplanes[i][0] );
@@ -157,9 +157,14 @@
 							term.echo("You can also try typing " + airplanes[i][0] );
 							term.echo(" resume normal flight plan");
 						} else if ((cmd.includes('Resume Normal')) || (cmd.includes('resume normal'))) {
-							boids[0]._holdingPattern = false;
-							boids[0]._leftDownWind = false;
-							boids[0]._rightDownWind = false;
+							boids[i]._holdingPattern = false;
+							boids[i]._leftDownWind = false;
+							boids[i]._rightDownWind = false;
+						} else if ((cmd.includes('Altitude')) ) {
+							var str = cmd;
+							var n = str.lastIndexOf('/');
+							var result = str.substring(n + 1);
+							boids[i]._targetAltitude = result;
 						}
 					}
 					if (cmd.includes('Next') || cmd.includes('next')) {
@@ -544,21 +549,21 @@
 
 
 
-					curve = new THREE.CubicBezierCurve3(
-                        new THREE.Vector3( 800, 100, 700 ),
-                        new THREE.Vector3( 700, 100, 600 ),
-                        new THREE.Vector3( -400, -250, 50 ),
-                        new THREE.Vector3( -2000, -250, 0 )
-                    );
+					// curve = new THREE.CubicBezierCurve3(
+     //                    new THREE.Vector3( 800, 100, 700 ),
+     //                    new THREE.Vector3( 700, 100, 600 ),
+     //                    new THREE.Vector3( -400, -250, 50 ),
+     //                    new THREE.Vector3( -2000, -250, 0 )
+     //                );
 
-                    var geometry = new THREE.Geometry();
-                    geometry.vertices = curve.getPoints( 50 );
+     //                var geometry = new THREE.Geometry();
+     //                geometry.vertices = curve.getPoints( 50 );
 
-                    var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+     //                var material = new THREE.LineBasicMaterial( { color : 0xff0000 } );
 
-                    // Create the final object to add to the scene
-                    var curveObject = new THREE.Line( geometry, material );
-                    scene.add(curveObject);
+     //                // Create the final object to add to the scene
+     //                var curveObject = new THREE.Line( geometry, material );
+     //                scene.add(curveObject);
 
 
 
