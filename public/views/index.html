@@ -10,7 +10,9 @@
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/css/jquery.terminal.min.css" rel="stylesheet"/>
+		<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/css/jquery.terminal.min.css" rel="stylesheet"/> -->
+		<link rel="stylesheet" type="text/css" href="../stylesheets/jquery.terminal.css" />
+
 		<style type="text/css">
 			body {
 				background-color:black;
@@ -35,7 +37,7 @@
 			<div class="radar"></div>
 
 
-			
+
 
 		</div>
 		<div id="title">
@@ -155,12 +157,12 @@
 							boids[0]._holdingPattern = false;
 							boids[0]._leftDownWind = false;
 							boids[0]._rightDownWind = false;
-						} 
+						}
 					}
 					if (cmd.includes('Next') || cmd.includes('next')) {
 						term.echo("Opening module");
 						window.location.replace("http://www.w3schools.com");
-					} 
+					}
 				}
 				// if (cmd == )
 
@@ -181,7 +183,7 @@
 			 //    } else {
 			 //    	term.echo('test');
 			 //    }
-			}); 
+			});
 
 
 			var scene = new THREE.Scene();
@@ -392,7 +394,15 @@
 
 					scene.add(skyboxMesh);
 
-
+					var airport = loader.load(
+						'../assets/airport.png',
+						function(airport) {
+							var airportMaterial = new THREE.MeshBasicMaterial({map: airport});
+							var mesh = new THREE.Mesh(new THREE.BoxGeometry(1000,600,1), airportMaterial);
+							mesh.position.y = -249;
+							mesh.rotation.x = Math.PI/2;
+							scene.add(mesh);
+						});
 
 					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, .1, 5000 );
 					camera.position.set( 0, 0, -500 );
@@ -602,7 +612,7 @@
 						}
 
 
-						
+
 
 
 						for ( var i = 0, il = boids.length; i < il; i++ ) {
