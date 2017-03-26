@@ -1,0 +1,21 @@
+{
+  "name": "threejs-planes",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Alpri Else <alprielse@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/dillionverma/threejs-planes",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

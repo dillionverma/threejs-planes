@@ -7,6 +7,8 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<!-- <link rel="stylesheet" href="css/main.css"> -->
 		<link href='https://fonts.googleapis.com/css?family=Lato:400,700,700italic,400italic,300,300italic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		
 		<style type="text/css">
 			body {
 				margin:0;
@@ -24,9 +26,12 @@
 	<body>
 
 		<div id="container">
-
+			<button id="startButtonId">Play</button>
+			<button id="pauseButtonId">Pause</button>
+			<div class="console-display"></div>
 			<div class="console">
 				<input type="text" name="test" id="console-input">
+				
 			</div>
 
 		</div>
@@ -35,21 +40,49 @@
 			<p>Move your mouse around!</p>
 		</div>
 
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+		      </div>
+		      <div class="modal-body">
+		        ...
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
 
-		<script src="lib/three.min.js"></script>
-		<script src="lib/ColladaLoader.js"></script>
-		<script src="lib/THREE.MeshLine.js"></script>
+		<script src="../lib/three.min.js"></script>
+		<script src="../lib/ColladaLoader.js"></script>
+		<script src="../lib/THREE.MeshLine.js"></script>
 
 
-		<script src="js/StereoEffect.js"></script>
-		<script src="js/DeviceOrientationControls.js"></script>
-		<script src="js/OrbitControls.js"></script>
-		<script src="js/Bird.js"></script>
+		<script src="../js/StereoEffect.js"></script>
+		<script src="../js/DeviceOrientationControls.js"></script>
+		<script src="../js/OrbitControls.js"></script>
+		<script src="../js/Bird.js"></script>
 
 
 		<script>
+
+
+			$(document).ready(function() {
+				$('#myModal').modal('toggle');
+			})
+
+
 
 			$('#console-input').bind("enterKey",function(e){
 				if (Math.sqrt(boids[0].velocity.x^2 + boids[0].velocity.z^2) < boids[0]._minSpeed) {
@@ -97,6 +130,8 @@
 					console.log($('#console-input').val().split(" ")[1]);
 				}
 
+				$('#myModal').modal('show');
+
 
 
 			});
@@ -115,7 +150,10 @@
 				SCREEN_WIDTH_HALF = SCREEN_WIDTH  / 2,
 				SCREEN_HEIGHT_HALF = SCREEN_HEIGHT / 2;
 
-			var planeWorking = false;
+			var planeWorking = true;
+
+			var firstRun = false;
+			var firstCounter = 0;
 
 			var camera,
 				controls,
@@ -128,6 +166,15 @@
 			var counter = 0;
 			var leftDownWindCounter = 1;
 			var rightDownWindCounter = 1;
+
+			$('#pauseButtonId').click(function() {
+				planeWorking = false;
+			})
+			$('#startButtonId').click(function() {
+				planeWorking = true;
+			})
+
+
 
 			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
 			scene.add(ground);*/
@@ -145,10 +192,10 @@
 			// Based on http://www.openprocessing.org/visuals/?visualID=6910
 
 			var loader = new THREE.FontLoader();
-			loader.load( 'js/helvetiker_regular.typeface.json', function ( font ) {
+			loader.load( '../js/helvetiker_regular.typeface.json', function ( font ) {
 
 			loader = new THREE.ColladaLoader();
-		    loader.load('assets/models/3d-model.dae',function colladaReady( collada ){
+		    loader.load('../assets/models/3d-model.dae',function colladaReady( collada ){
 
 				var Boid = function() {
 
@@ -244,7 +291,7 @@
 					var loader = new THREE.TextureLoader();
 
 					var groundTexture = loader.load(
-						'textures/terrain/grasslight-big.jpg',
+						'../textures/terrain/grasslight-big.jpg',
 					 	function(texture) {
 							var groundMaterial = new THREE.MeshBasicMaterial({map: groundTexture});
 							var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry(50000,50000), groundMaterial)
@@ -258,7 +305,7 @@
 					groundTexture.wrapS = THREE.RepeatWrapping;
 					groundTexture.wrapT = THREE.RepeatWrapping;
 
-					var urlPrefix = "textures/sky/";
+					var urlPrefix = "../textures/sky/";
 					var urls = [ urlPrefix + "hills_ft.jpg", urlPrefix + "hills_bk.jpg",
 					    urlPrefix + "hills_up.jpg", urlPrefix + "hills_dn.jpg",
 					    urlPrefix + "hills_rt.jpg", urlPrefix + "hills_lf.jpg" ];
@@ -337,7 +384,7 @@
 	 				        // bird = birds [i]  = collada.scene;
 	 				        // scene.add( bird );
 	 				        // console.log(bird);
-	 				        planeWorking = true;
+	 				        // planeWorking = true;
 	 			        // });
 
 
@@ -444,17 +491,21 @@
 				}
 				function animate() {
 
+
+
 					counter += 1;
 
 					requestAnimationFrame( animate );
 
 					controls.update();
+
 					if (planeWorking) {
+					
 						for ( var i = 0, il = boids.length; i < il; i++ ) {
 
 							boid = boids[ i ];
 							boid.run( boids );
-
+ 
 
 							bird = birds[ i ];
 							bird.position.copy( boids[ i ].position );
@@ -649,13 +700,22 @@
 					}
 
 
+					controls.update();
 
 					render();
 				}
 
 				function render() {
+					
+					if (!planeWorking) return;
 					renderer.render( scene, camera );
-				  // effect.render(scene, camera);
+					if (!firstRun) {
+						firstCounter++;
+						if (firstCounter == 10) {
+							planeWorking = false;
+						}
+					} 
+				  //effect.render(scene, camera);
 				}
 				function findPlane(callsign) {
 					//	Finds Plane Based on Reference Name
