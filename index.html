@@ -42,6 +42,8 @@
 		<script src="lib/THREE.MeshLine.js"></script>
 
 
+		<script src="js/StereoEffect.js"></script>
+		<script src="js/DeviceOrientationControls.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="js/Bird.js"></script>
 
@@ -96,7 +98,7 @@
 					console.log($('#console-input').val().split(" ")[1]);
 				}
 
-			   
+
 
 			});
 			$('#console-input').keyup(function(e){
@@ -294,6 +296,7 @@
 					renderer.setPixelRatio( window.devicePixelRatio );
 					container.appendChild( renderer.domElement );
 
+
 					birds = [];
 					boids = [];
 					mishs = [];
@@ -323,8 +326,8 @@
 							bird.scale.set(0.05,0.05,0.05);
 							scene.add(bird);
 
-	 				    	console.log(bird);
-	 				    	console.log(birds[i]);
+								//   	console.log(bird);
+								//   	console.log(birds[i]);
 	 				        // bird = birds [i]  = collada.scene;
 	 				        // scene.add( bird );
 	 				        // console.log(bird);
@@ -387,6 +390,21 @@
 					controls.enableZoom = false;
 
 					document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+					// effect = new THREE.StereoEffect(renderer);
+					// element.addEventListener('click', fullscreen, false);
+
+					function setOrientationControls(e) {
+	          if (!e.alpha) {
+	            return;
+	          }
+	          controls = new THREE.DeviceOrientationControls(camera, true);
+	          controls.connect();
+	          controls.update();
+	          element.addEventListener('click', fullscreen, false);
+	          window.removeEventListener('deviceorientation', setOrientationControls, true);
+	        }
+	        window.addEventListener('deviceorientation', setOrientationControls, true);
 
 					window.addEventListener( 'resize', onWindowResize, false );
 					onWindowResize();
@@ -631,6 +649,7 @@
 
 				function render() {
 					renderer.render( scene, camera );
+				  // effect.render(scene, camera);
 				}
 				function findPlane(callsign) {
 					//	Finds Plane Based on Reference Name
