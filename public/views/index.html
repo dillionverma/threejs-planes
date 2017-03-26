@@ -188,7 +188,7 @@
 			 //    }
 			});
 
-			
+
 //			function getVoice(text) {
 //			    var audio = $.{"#player"};
 //			    audio[0].setAttribute()
@@ -259,7 +259,7 @@
 
 			/*var ground = new THREE.BoxGeometry(1000, 1000, 1000);
 			scene.add(ground);*/
-			var airplanes = [ ["Boeing 737", 800, 100, 700, -0.5, -0.5] ];
+			var airplanes = [ ["Boeing 737", 800, 100, 700, -0.5, -0.5], ["Virgin 737", 500, 100, 700, -0.5, -0.5] ];
 
 			var commando = [];
 
@@ -467,7 +467,7 @@
 						boid.velocity.y = 0;
 						boid.velocity.z = airplanes[i][5];
 
- 				    	bird = birds[i] = collada.scene
+ 				    	bird = birds[i] = collada.scene.clone();
  				    	// bird.phase = Math.floor( Math.random() * 62.83 );
 						bird.scale.set(0.05,0.05,0.05);
 						scene.add(bird);
@@ -483,10 +483,7 @@
 						// loader = new THREE.ColladaLoader();
 						// console.log('testing again1');
 	 				//     loader.load('assets/models/3d-model.dae',function colladaReady( collada ){
-	 				    	bird = birds[i] = collada.scene
-	 				    	// bird.phase = Math.floor( Math.random() * 62.83 );
-							bird.scale.set(0.05,0.05,0.05);
-							scene.add(bird);
+
 
 								//   	console.log(bird);
 								//   	console.log(birds[i]);
