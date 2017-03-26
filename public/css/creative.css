@@ -160,7 +160,7 @@ aside {
   }
 }
 header {
-  position: relative;
+  position: absolute;
   width: 100%;
   min-height: auto;
   -webkit-background-size: cover;
@@ -168,7 +168,7 @@ header {
   background-size: cover;
   -o-background-size: cover;
   background-position: center;
-  background-image: url('../img/header.jpg');
+  /*background-image: url('../img/header.jpg');*/
   text-align: center;
   color: white;
 }
